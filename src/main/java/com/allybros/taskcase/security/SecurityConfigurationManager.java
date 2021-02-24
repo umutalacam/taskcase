@@ -31,8 +31,12 @@ public class SecurityConfigurationManager extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/dashboard").hasRole(ADMIN)
-                .antMatchers("/tasks").hasAnyRole(STD_USER, ADMIN);
+                .antMatchers("/tasks").hasAnyRole(STD_USER, ADMIN).and().formLogin();
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Bean
