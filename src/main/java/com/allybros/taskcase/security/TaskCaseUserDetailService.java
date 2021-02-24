@@ -5,6 +5,7 @@ import com.allybros.taskcase.data.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +23,7 @@ public class TaskCaseUserDetailService implements UserDetailsService {
         if (s.equals("admin")) {
             User user = new User();
             user.setUsername("admin");
-            user.setEncodedPassword("1998");
+            user.setEncodedPassword(new BCryptPasswordEncoder().encode("1998"));
             user.setRole(User.Role.ADMIN);
             return new TaskCaseUserDetail(user);
         }

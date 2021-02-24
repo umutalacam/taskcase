@@ -3,11 +3,11 @@ package com.allybros.taskcase.controller;
 import com.allybros.taskcase.data.domain.User;
 import com.allybros.taskcase.data.repository.UserRepository;
 import com.allybros.taskcase.security.UserDataValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.management.InvalidAttributeValueException;
@@ -32,7 +32,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(WebRequest request){
+    public String register(Model model, WebRequest request){
         // Validate user data
         try {
             String username = userDataValidator.validateUsername(request.getParameter("username"));
@@ -40,15 +40,19 @@ public class RegisterController {
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
 
-            //TODO: Hash or encode the password
-            User user = new User(username, firstName, lastName, password);
+            // Encode password
+            String encodedPassword = new BCryptPasswordEncoder().encode(password);
+
+            User user = new User(username, firstName, lastName, encodedPassword);
             userRepository.save(user);
+
             return "redirect:/login";
 
 
         } catch (InvalidAttributeValueException e) {
             // Invalid user data, redirect to the error
-            return "redirect:/register?err="+e.getMessage();
+            model.addAttribute("err", e.getMessage());
+            return "register-form";
         }
 
     }

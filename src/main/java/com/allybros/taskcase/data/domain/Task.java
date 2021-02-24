@@ -14,12 +14,17 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private Date deadline;
+    @Column(nullable = false)
     private TaskState state;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "attendee")
     private User attendee;
 
     public Task() {

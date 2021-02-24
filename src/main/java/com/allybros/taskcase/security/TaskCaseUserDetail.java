@@ -1,8 +1,6 @@
 package com.allybros.taskcase.security;
 
 import com.allybros.taskcase.data.domain.User;
-import javassist.Loader;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,5 +57,9 @@ public class TaskCaseUserDetail implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

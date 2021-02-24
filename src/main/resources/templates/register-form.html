@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
@@ -12,25 +12,26 @@
             <h2 class="m-0">Create a new account</h2>
         </div>
         <div class="card-body">
-            <form action="/register" method="post">
+            <div th:if="${err}" th:text="${err}" class="alert alert-danger"></div>
+            <form action="/register" method="post" >
                 <div class="form-group">
                     <label for="inputUsername">Username</label>
-                    <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Pick a username">
+                    <input required type="text" class="form-control" id="inputUsername" name="username" placeholder="Pick a username">
                 </div>
 
                 <div class="form-group">
                     <label for="inputFirstName">First Name</label>
-                    <input type="text" class="form-control" id="inputFirstName" name="firstName" placeholder="First Name">
+                    <input required type="text" class="form-control" id="inputFirstName" name="firstName" placeholder="First Name">
                 </div>
 
                 <div class="form-group">
                     <label for="inputLastName">Last Name</label>
-                    <input type="text" class="form-control" id="inputLastName" name="lastName" placeholder="Last Name">
+                    <input required type="text" class="form-control" id="inputLastName" name="lastName" placeholder="Last Name">
                 </div>
 
                 <div class="form-group">
-                    <label for="inputLastName">Password</label>
-                    <input type="text" class="form-control" id="inputPassword" name="password" placeholder="Password">
+                    <label for="inputPassword">Password</label>
+                    <input required type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
                 </div>
 
                 <a type="submit" class="btn btn-danger" href="/">Return to Home</a>
