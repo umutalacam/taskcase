@@ -22,6 +22,17 @@ public class User {
     private String lastName;
     private String encodedPassword;
 
+    public User() {
+    }
+
+    public User(String username, String firstName, String lastName, String encodedPassword) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.encodedPassword = encodedPassword;
+        this.role = Role.STD_USER;
+    }
+
     public String toString(){
         return this.firstName + " " + this.lastName;
     }
