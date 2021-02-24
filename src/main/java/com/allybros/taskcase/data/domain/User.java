@@ -3,10 +3,7 @@ package com.allybros.taskcase.data.domain;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +16,22 @@ public class User {
     @GeneratedValue
     private int id;
 
+    @Column(nullable = false)
     private Role role;
+
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String lastName;
+
+    @Column(nullable = false)
     private String encodedPassword;
 
-    @OneToMany(mappedBy = "attendee")
+    @OneToMany(targetEntity = Task.class, mappedBy = "attendee")
     private List<Task> tasks;
 
     public User() {

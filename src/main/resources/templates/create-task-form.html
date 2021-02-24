@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Create new task</title>
@@ -12,6 +12,7 @@
                 <h2 class="m-0">Create a new task</h2>
             </div>
             <div class="card-body">
+                <div th:if="${err}" th:text="${err}" class="alert alert-danger"></div>
                 <form action="/tasks/create" method="post">
                     <div class="form-group">
                         <label for="inputTaskTitle">Title</label>
@@ -31,10 +32,10 @@
                     <div class="form-group">
                         <label for="inputTaskDeadline">State</label>
                         <select class="form-control" name="state">
-                            <option>Pending</option>
-                            <option>Completed</option>
-                            <option>Postponed</option>
-                            <option>Cancelled</option>
+                            <option value="0">Pending</option>
+                            <option value="1">Completed</option>
+                            <option value="2">Postponed</option>
+                            <option value="3">Cancelled</option>
                         </select>
                     </div>
 

@@ -14,12 +14,16 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @Column(nullable = false)
     private String title;
+
     @Column(nullable = false)
     private String description;
+
     @Column(nullable = false)
     private Date deadline;
+
     @Column(nullable = false)
     private TaskState state;
 
@@ -31,11 +35,12 @@ public class Task {
 
     }
 
-    public Task(String title, String description, Date deadline, TaskState state) {
+    public Task(String title, String description, Date deadline, TaskState state, User attendee) {
         this.title = title;
         this.deadline = deadline;
         this.description = description;
         this.state = state;
+        this.attendee = attendee;
     }
 
     @Override
