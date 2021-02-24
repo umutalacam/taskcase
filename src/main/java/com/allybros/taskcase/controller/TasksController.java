@@ -29,6 +29,9 @@ public class TasksController {
         this.taskService = taskService;
     }
 
+    /**
+     * Returns task list
+     */
     @GetMapping("/tasks")
     public String tasks(Model model,
                         @RequestParam(value = "list", required = false) String filter,

@@ -22,9 +22,17 @@
                 </ul>
             </div>
             <div class="card-body p-0">
+                <div th:if="${tasks.isEmpty()}" class="m-5 text-center">There are no tasks.</div>
                 <ul class="list-group list-group-flush">
                     <div th:each="task : ${tasks}">
-                        <li class="list-group-item" th:text="${task.title}"></li>
+                        <a href="" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 th:text="${task.title}" class="mb-1"></h5>
+                                <small>Edit</small>
+                            </div>
+                            <p th:text="${task.description}" class="mb-1"></p>
+                            <small th:text="${task.deadline}">Deadline</small>
+                        </a>
                     </div>
                 </ul>
             </div>
