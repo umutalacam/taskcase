@@ -2,9 +2,7 @@ package com.allybros.taskcase.data.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
@@ -14,8 +12,10 @@ public class Task {
         PENDING, COMPLETED, POSTPONED, CANCELLED}
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String title;
+    private String description;
     private Date deadline;
     private TaskState state;
 
@@ -26,9 +26,21 @@ public class Task {
 
     }
 
-    public Task(String title, Date deadline, TaskState state) {
+    public Task(String title, String description, Date deadline, TaskState state) {
         this.title = title;
         this.deadline = deadline;
+        this.description = description;
         this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", deadline=" + deadline +
+                ", state=" + state +
+                '}';
     }
 }

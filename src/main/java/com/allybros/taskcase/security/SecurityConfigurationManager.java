@@ -1,5 +1,6 @@
 package com.allybros.taskcase.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,8 +15,13 @@ public class SecurityConfigurationManager extends WebSecurityConfigurerAdapter {
     private static final String STD_USER = "STD_USER";
     private static final String ADMIN = "ADMIN";
 
+    @Autowired
+    private TaskCaseUserDetailService taskCaseUserDetailService;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(taskCaseUserDetailService);
+        /**
         auth.inMemoryAuthentication()
                 .withUser("user")
                 .password("1234")
@@ -24,6 +30,7 @@ public class SecurityConfigurationManager extends WebSecurityConfigurerAdapter {
                 .withUser("admin")
                 .password("1234")
                 .roles(STD_USER, ADMIN);
+         **/
     }
 
 
@@ -33,8 +40,9 @@ public class SecurityConfigurationManager extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/dashboard").hasRole(ADMIN)
-                .antMatchers("/tasks").hasAnyRole(STD_USER, ADMIN).and().formLogin();
+                .antMatchers("/tasks/**").hasAnyRole(STD_USER, ADMIN).and().formLogin();
 
+        // For h2 console
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }

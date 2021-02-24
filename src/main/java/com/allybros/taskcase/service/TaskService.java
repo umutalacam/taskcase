@@ -5,6 +5,8 @@ import com.allybros.taskcase.data.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class TaskService {
 
@@ -15,5 +17,13 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    public ArrayList<Task> getAllTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        Iterable<Task> taskIterable = taskRepository.findAll();
+        taskIterable.forEach(tasks::add);
+
+        return tasks;
+    }
 
 }

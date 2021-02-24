@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="card m-5">
+        <div class="card-header">
+            <h2 class="m-0">Create a new account</h2>
+        </div>
+        <div class="card-body">
+            <form action="/register" method="post">
+                <div class="form-group">
+                    <label for="inputUsername">Username</label>
+                    <input type="text" class="form-control" id="inputUsername" name="title" placeholder="Pick a username">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputFirstName">First Name</label>
+                    <input type="text" class="form-control" id="inputFirstName" name="title" placeholder="First Name">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputLastName">Last Name</label>
+                    <input type="text" class="form-control" id="inputLastName" name="title" placeholder="Last Name">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputLastName">Password</label>
+                    <input type="text" class="form-control" id="inputPassword" name="title" placeholder="Password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

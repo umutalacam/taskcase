@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>My Tasks</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <ul>
-        <li>Your tasks will be here</li>
-    </ul>
+    <div class="container">
+
+        <h1 class="mt-5">My Tasks</h1>
+        <a type="button" class="btn btn-success" href="/tasks/create">Create New Task</a>
+        <a type="button" class="btn btn-inline btn-danger" href="/logout">Log Out</a>
+
+        <div class="card mt-2">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item"><a class="nav-link active" href="?list=pending">Pending</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?list=completed">Completed</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?list=postponed">Postponed</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?list=cancelled">Cancelled</a></li>
+                </ul>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    <div th:each="task : ${tasks}">
+                        <li class="list-group-item" th:text="${task.title}"></li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

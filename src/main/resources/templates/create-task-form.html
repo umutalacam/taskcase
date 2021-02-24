@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create new task</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card m-5">
+            <div class="card-header">
+                <h2 class="m-0">Create a new task</h2>
+            </div>
+            <div class="card-body">
+                <form action="/tasks/create" method="post">
+                    <div class="form-group">
+                        <label for="inputTaskTitle">Title</label>
+                        <input type="text" class="form-control" id="inputTaskTitle" name="title" placeholder="Enter a title for the task">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputTaskDescription">Description</label>
+                        <input type="text" class="form-control" id="inputTaskDescription" name="description" placeholder="Enter a description for the task">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputTaskDeadline">Deadline</label>
+                        <input type="date" class="form-control" name="deadline" id="inputTaskDeadline">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputTaskDeadline">State</label>
+                        <select class="form-control" name="state">
+                            <option>Pending</option>
+                            <option>Completed</option>
+                            <option>Postponed</option>
+                            <option>Cancelled</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
