@@ -29,10 +29,15 @@ public class TaskService {
 
     public ArrayList<Task> getTaskForUser(User attendee) {
         ArrayList<Task> tasks = new ArrayList<>();
+        Iterable<Task> taskIterable;
 
-        Iterable<Task> taskIterable = taskRepository.findTaskByAttendee(attendee);
+        if (attendee.getRole() == User.Role.ADMIN) {
+            taskIterable = taskRepository.findAll();
+        } else {
+            taskIterable = taskRepository.findTaskByAttendee(attendee);
+        }
+
         taskIterable.forEach(tasks::add);
-
         return tasks;
     }
 
