@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<div th:replace="fragments/nav.html :: navbar"></div>
     <div class="container">
-
         <h1 class="mt-5"><span th:text="${current_user}"></span>'s tasks</h1>
         <a type="button" class="btn btn-success" href="/tasks/create">Create New Task</a>
         <a type="button" class="btn btn-inline btn-danger" href="/logout">Log Out</a>
