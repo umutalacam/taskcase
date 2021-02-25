@@ -4,6 +4,7 @@ import com.allybros.taskcase.data.domain.Task;
 import com.allybros.taskcase.data.domain.User;
 import com.allybros.taskcase.security.TaskCaseUserDetail;
 import com.allybros.taskcase.service.TaskService;
+import org.h2.engine.Mode;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,7 +78,9 @@ public class TasksController {
      * Returns the task create form
      */
     @GetMapping("/tasks/create")
-    public String createTaskForm(){
+    public String createTaskForm(Model model){
+        model.addAttribute("old_task",
+                new Task("", "", new Date(System.currentTimeMillis()), TaskState.PENDING, null));
         return "task-form";
     }
 
@@ -132,8 +135,9 @@ public class TasksController {
         // TODO: Exception handling
         Task oldTask = taskService.getTaskById(id);
         System.out.println("Edit task: "+ oldTask);
-
         model.addAttribute("old_task", oldTask);
+        model.addAttribute("edit", true);
+
         return "task-form";
     }
 
@@ -162,7 +166,7 @@ public class TasksController {
             User oldTaskAttendee = oldTask.getAttendee();
 
             // Check if the task is owned by principal
-            if (oldTaskAttendee.getRole() != User.Role.ADMIN ||
+            if (oldTaskAttendee.getRole() != User.Role.ADMIN &&
                     oldTaskAttendee.getId() != principal.getUser().getId()) {
                 throw new SecurityException("Unauthorized access");
             }
@@ -171,17 +175,14 @@ public class TasksController {
             Date deadline = Date.valueOf(deadlineInput);
             TaskState state = TaskState.PENDING;
             int stateValue = Integer.parseInt(stateInput);
-            if (stateValue>=0 && stateValue<=4) state = TaskState.values()[stateValue];
+            if (stateValue >= 0 && stateValue <= 4) state = TaskState.values()[stateValue];
 
-            // Update task object
-            oldTask.setTitle(titleInput);
-            oldTask.setDescription(descriptionInput);
-            oldTask.setDeadline(deadline);
-            oldTask.setState(state);
+            Task newTask = new Task(titleInput, descriptionInput, deadline, state, oldTaskAttendee);
+            newTask.setId(oldTask.getId());
 
-            taskService.updateTask(oldTask);
+            taskService.updateTask(newTask);
             model.addAttribute("msg", "Task is updated.");
-            return "tasks";
+            return "redirect:/tasks";
 
         } catch (InvalidAttributeValueException e) {
             model.addAttribute("edit", true);

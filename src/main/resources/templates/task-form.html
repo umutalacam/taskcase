@@ -13,25 +13,25 @@
             </div>
             <div class="card-body">
                 <div th:if="${err}" th:text="${err}" class="alert alert-danger"></div>
-                <form action="/tasks/create" method="post">
+                <form th:action="${edit} ? '/tasks/edit/' + ${old_task.id} : '/tasks/create'" method="post">
                     <div class="form-group">
                         <label for="inputTaskTitle">Title</label>
-                        <input type="text" class="form-control" id="inputTaskTitle" name="title" placeholder="Enter a title for the task">
+                        <input  th:value="${old_task.title}" type="text" class="form-control" id="inputTaskTitle" name="title" placeholder="Enter a title for the task">
                     </div>
 
                     <div class="form-group">
                         <label for="inputTaskDescription">Description</label>
-                        <input type="text" class="form-control" id="inputTaskDescription" name="description" placeholder="Enter a description for the task">
+                        <input th:value="${old_task.description}"  type="text" class="form-control" id="inputTaskDescription" name="description" placeholder="Enter a description for the task">
                     </div>
 
                     <div class="form-group">
                         <label for="inputTaskDeadline">Deadline</label>
-                        <input type="date" class="form-control" name="deadline" id="inputTaskDeadline">
+                        <input th:value="${old_task.deadline}" type="date" class="form-control" name="deadline" id="inputTaskDeadline">
                     </div>
 
                     <div class="form-group">
                         <label for="inputTaskDeadline">State</label>
-                        <select class="form-control" name="state">
+                        <select th:value="${old_task.state}" class="form-control" name="state">
                             <option value="0">Pending</option>
                             <option value="1">Completed</option>
                             <option value="2">Postponed</option>

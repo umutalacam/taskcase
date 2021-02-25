@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends CrudRepository<Task, Integer> {
     List<Task> findTaskByAttendee(User user);
+
 }

@@ -50,6 +50,14 @@ public class TaskService {
     }
 
     public void updateTask(Task task) {
-        taskRepository.save(task);
+        Task oldTask = getTaskById(task.getId());
+
+        oldTask.setTitle(task.getTitle());
+        oldTask.setDescription(task.getDescription());
+        oldTask.setDeadline(task.getDeadline());
+        oldTask.setState(task.getState());
+        oldTask.setAttendee(task.getAttendee());
+
+        taskRepository.save(oldTask);
     }
 }
