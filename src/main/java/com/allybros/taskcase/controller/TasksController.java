@@ -8,12 +8,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.management.InvalidAttributeValueException;
-import java.io.Console;
 import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,7 +78,7 @@ public class TasksController {
      */
     @GetMapping("/tasks/create")
     public String createTaskForm(){
-        return "create-task-form";
+        return "task-form";
     }
 
     /**
@@ -115,7 +115,7 @@ public class TasksController {
             System.out.println(task);
 
             // Create task
-            taskService.createTask(task);
+            taskService.saveTask(task);
             return "redirect:/tasks";
 
         } catch (InvalidAttributeValueException | IllegalArgumentException e) {
@@ -124,5 +124,70 @@ public class TasksController {
             model.addAttribute("err", e.getMessage());
             return "redirect:/tasks/create";
         }
+    }
+
+    @GetMapping("/tasks/edit/{id}")
+    public String editTaskForm(Model model, @PathVariable int id){
+        // Retrieve old information
+        // TODO: Exception handling
+        Task oldTask = taskService.getTaskById(id);
+        System.out.println("Edit task: "+ oldTask);
+
+        model.addAttribute("old_task", oldTask);
+        return "task-form";
+    }
+
+    @PostMapping("/tasks/edit/{id}")
+    public String editTask(WebRequest request,
+                           Model model,
+                           @PathVariable int id,
+                           @AuthenticationPrincipal TaskCaseUserDetail principal){
+
+        // Validate task data
+        String titleInput = request.getParameter("title");
+        String descriptionInput = request.getParameter("description");
+        String deadlineInput = request.getParameter("deadline");
+        String stateInput = request.getParameter("state");
+
+        try {
+            // Check if fields are null
+            if (titleInput == null ||
+                    descriptionInput == null ||
+                    deadlineInput == null ||
+                    stateInput == null )
+                throw new InvalidAttributeValueException("Fields are missing.");
+
+            // Retrieve old task object
+            Task oldTask = taskService.getTaskById(id);
+            User oldTaskAttendee = oldTask.getAttendee();
+
+            // Check if the task is owned by principal
+            if (oldTaskAttendee.getRole() != User.Role.ADMIN ||
+                    oldTaskAttendee.getId() != principal.getUser().getId()) {
+                throw new SecurityException("Unauthorized access");
+            }
+
+            // Parse user data
+            Date deadline = Date.valueOf(deadlineInput);
+            TaskState state = TaskState.PENDING;
+            int stateValue = Integer.parseInt(stateInput);
+            if (stateValue>=0 && stateValue<=4) state = TaskState.values()[stateValue];
+
+            // Update task object
+            oldTask.setTitle(titleInput);
+            oldTask.setDescription(descriptionInput);
+            oldTask.setDeadline(deadline);
+            oldTask.setState(state);
+
+            taskService.updateTask(oldTask);
+            model.addAttribute("msg", "Task is updated.");
+            return "tasks";
+
+        } catch (InvalidAttributeValueException e) {
+            model.addAttribute("edit", true);
+            model.addAttribute("err", e.getMessage());
+            return "task-form";
+        }
+
     }
 }

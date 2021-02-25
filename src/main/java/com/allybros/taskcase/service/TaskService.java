@@ -6,7 +6,9 @@ import com.allybros.taskcase.data.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -14,8 +16,14 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public void createTask(Task task){
+    public void saveTask(Task task){
         taskRepository.save(task);
+    }
+
+    public Task getTaskById(int id){
+        Optional<Task> taskOptional = taskRepository.findById(id);
+        if (taskOptional.isPresent()) return taskOptional.get();
+        else throw new EntityNotFoundException("No task found with the given id.");
     }
 
     public ArrayList<Task> getAllTasks() {
@@ -41,4 +49,7 @@ public class TaskService {
         return tasks;
     }
 
+    public void updateTask(Task task) {
+        taskRepository.save(task);
+    }
 }
