@@ -27,7 +27,8 @@ public class HomeController {
                 return "redirect:/tasks";
             }
         }
-
+        model.addAttribute("no_tasks",true);
+        model.addAttribute("no_dash",true);
         return "home";
     }
 

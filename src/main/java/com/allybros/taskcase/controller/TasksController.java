@@ -44,17 +44,24 @@ public class TasksController {
 
         // Get current user
         User currentUser = principal.getUser();
-
         User attendant;
 
         // Set attendee
         if (currentUser.getRole() == User.Role.ADMIN) {
             if (attendee != null) {
                 attendant = userService.getUserByUsername(attendee);
-                if (attendant != null)
+                if (attendant != null) {
                     currentUser = attendant;
+                    model.addAttribute("attendee", attendee);
+                } else {
+                    model.addAttribute("admin_heading", true);
+                }
+                model.addAttribute("no_actions", true);
+            } else {
+                model.addAttribute("admin_heading", true);
             }
         } else {
+            // Remove dashboard link from nav bar
             model.addAttribute("no_dash", true);
         }
 

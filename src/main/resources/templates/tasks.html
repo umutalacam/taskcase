@@ -8,17 +8,20 @@
 <body>
 <div th:replace="fragments/nav.html :: navbar(no_dash=${no_dash})"></div>
     <div class="container">
-        <h1 class="mt-5"><span th:text="${current_user}"></span>'s tasks</h1>
-        <a type="button" class="btn btn-success" href="/tasks/create">Create New Task</a>
-        <a type="button" class="btn btn-inline btn-danger" href="/logout">Log Out</a>
+        <h1 th:unless="${admin_heading}" class="mt-5"><span th:text="${current_user}"></span>'s tasks</h1>
+        <h1 th:if="${admin_heading}" class="mt-5">All tasks</h1>
+        <div th:unless="${no_actions}">
+            <a type="button" class="btn btn-success" href="/tasks/create">Create New Task</a>
+            <a type="button" class="btn btn-inline btn-danger" href="/logout">Log Out</a>
+        </div>
 
         <div class="card mt-2">
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item"><a th:classappend="${filter=='pending'} ? 'active' : ''" class="nav-link" href="?list=pending">Pending</a></li>
-                    <li class="nav-item"><a th:classappend="${filter=='completed'} ? 'active' : ''" class="nav-link" href="?list=completed">Completed</a></li>
-                    <li class="nav-item"><a th:classappend="${filter=='postponed'} ? 'active' : ''" class="nav-link" href="?list=postponed">Postponed</a></li>
-                    <li class="nav-item"><a th:classappend="${filter=='cancelled'} ? 'active' : ''" class="nav-link" href="?list=cancelled">Cancelled</a></li>
+                    <li class="nav-item"><a th:classappend="${filter=='pending'} ? 'active' : ''" class="nav-link" th:href="${attendee} ? '?attendee=' + ${attendee} + '&list=pending' :'?list=pending'">Pending</a></li>
+                    <li class="nav-item"><a th:classappend="${filter=='completed'} ? 'active' : ''" class="nav-link" th:href="${attendee} ? '?attendee=' + ${attendee} + '&list=completed' :'?list=completed'">Completed</a></li>
+                    <li class="nav-item"><a th:classappend="${filter=='postponed'} ? 'active' : ''" class="nav-link" th:href="${attendee} ? '?attendee=' + ${attendee} + '&list=postponed' :'?list=postponed'">Postponed</a></li>
+                    <li class="nav-item"><a th:classappend="${filter=='cancelled'} ? 'active' : ''" class="nav-link" th:href="${attendee} ? '?attendee=' + ${attendee} + '&list=cancelled' :'?list=cancelled'">Cancelled</a></li>
                 </ul>
             </div>
             <div class="card-body p-0">
