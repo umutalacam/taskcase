@@ -20,14 +20,6 @@ public class TaskCaseUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        if (s.equals("admin")) {
-            User user = new User();
-            user.setUsername("admin");
-            user.setEncodedPassword(new BCryptPasswordEncoder().encode("1998"));
-            user.setRole(User.Role.ADMIN);
-            return new TaskCaseUserDetail(user);
-        }
-
         // Load user details from JPA
         User user = userRepository.findUserByUsername(s);
         if (user == null) throw new UsernameNotFoundException("No user found with the given username");

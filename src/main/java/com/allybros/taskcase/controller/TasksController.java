@@ -4,7 +4,8 @@ import com.allybros.taskcase.data.domain.Task;
 import com.allybros.taskcase.data.domain.User;
 import com.allybros.taskcase.security.TaskCaseUserDetail;
 import com.allybros.taskcase.service.TaskService;
-import org.h2.engine.Mode;
+import com.allybros.taskcase.service.UserService;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +25,12 @@ import static com.allybros.taskcase.data.domain.Task.TaskState;
 @Controller
 public class TasksController {
 
-    TaskService taskService;
+    final TaskService taskService;
+    final UserService userService;
 
-    public TasksController(TaskService taskService) {
+    public TasksController(TaskService taskService, UserService userService) {
         this.taskService = taskService;
+        this.userService = userService;
     }
 
     /**
@@ -36,10 +39,22 @@ public class TasksController {
     @GetMapping("/tasks")
     public String tasks(Model model,
                         @RequestParam(value = "list", required = false) String filter,
+                        @RequestParam(value = "attendee", required = false) String attendee,
                         @AuthenticationPrincipal TaskCaseUserDetail principal) {
 
         // Get current user
         User currentUser = principal.getUser();
+
+        User attendant;
+
+        // Set attendee
+        if (currentUser.getRole() == User.Role.ADMIN) {
+            if (attendee != null) {
+                attendant = userService.getUserByUsername(attendee);
+                if (attendant != null)
+                    currentUser = attendant;
+            }
+        }
 
         // Get filter
         final TaskState filteredState;
@@ -147,6 +162,9 @@ public class TasksController {
                            @PathVariable int id,
                            @AuthenticationPrincipal TaskCaseUserDetail principal){
 
+        // Get current user
+        User currentUser = principal.getUser();
+
         // Validate task data
         String titleInput = request.getParameter("title");
         String descriptionInput = request.getParameter("description");
@@ -166,7 +184,7 @@ public class TasksController {
             User oldTaskAttendee = oldTask.getAttendee();
 
             // Check if the task is owned by principal
-            if (oldTaskAttendee.getRole() != User.Role.ADMIN &&
+            if (currentUser.getRole() != User.Role.ADMIN &&
                     oldTaskAttendee.getId() != principal.getUser().getId()) {
                 throw new SecurityException("Unauthorized access");
             }

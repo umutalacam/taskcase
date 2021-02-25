@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Dashboard</h1>
+<div class="container">
+    <div class="jumbotron mt-5">
+        <h1 class="display-4">TaskCase Dashboard</h1>
+        <p class="lead">Welcome Admin Admin</p>
+        <hr class="my-4">
+        <p class="lead">
+            <a class="btn btn-success" href="/tasks?attendee=all" role="button">Show All Tasks</a>
+            <a class="btn btn-danger" href="/logout" role="button">Log Out</a>
+        </p>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-header">
+            <h5 class="m-0">Registered Users</h5>
+        </div>
+        <div class="card-body p-0">
+
+            <!-- User List -->
+            <ul class="list-group list-group-flush">
+                <div th:each="attendee : ${users}">
+                    <a th:href="'/tasks?attendee=' + ${attendee.username}" class="list-group-item list-group-item-action">
+                        <h5 th:text="${attendee.firstName + ' ' + attendee.lastName}">Firstname Lastname</h5>
+                        <p th:text="${attendee.username}" class="mb-0">Username</p>
+                    </a>
+                </div>
+            </ul>
+
+        </div>
+    </div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
