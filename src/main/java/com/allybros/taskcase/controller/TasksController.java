@@ -54,6 +54,8 @@ public class TasksController {
                 if (attendant != null)
                     currentUser = attendant;
             }
+        } else {
+            model.addAttribute("no_dash", true);
         }
 
         // Get filter
